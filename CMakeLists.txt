@@ -25,12 +25,26 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-set(msg_files
-    "msg/WheelSpeeds.msg"
-)
+macro(subdirlist result dir type)
+  file(GLOB children "${dir}/${type}")
+  set(filelist "")
+  foreach(child ${children})
+      get_filename_component(child ${child} NAME)
+      list(FIND EXCEPTION_MSG ${child} index)
+      if(${index} EQUAL -1)
+        list(APPEND filelist "${dir}/${child}")
+      else()
+        message("${child} is not supported in ros2")
+      endif()
+  endforeach()
+  set(${result} ${filelist})
+endmacro()
+
+subdirlist(MSG_FILES "msg" "*.msg")
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-   ${msg_files}
+    ${MSG_FILES}
+    DEPENDENCIES std_msgs
 )
 
 ament_export_dependencies(rosidl_default_runtime)
