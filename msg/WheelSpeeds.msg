@@ -1,4 +1,4 @@
-Float32 FL
-Float32 FR
-Float32 RL
-Float32 RR
+float32 fl
+float32 fr
+float32 rl
+float32 rr
